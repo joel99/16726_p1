@@ -13,28 +13,28 @@ Some issues: notably, SSD is pretty brittle and actually fails if the search ran
 
 Initial results shown with the simplest SSD metric.
 
-[Cathedral](./out/numpy_base/ssd/cathedral_g_(5%2C%202)_r_(12%2C%203).jpg)
+![Cathedral](./out/numpy_base/ssd/cathedral_g_(5%2C%202)_r_(12%2C%203).jpg)
 
-[Self Portrait](./out/numpy_base/ssd/self_portrait_g_(78%2C%2029)_r_(175%2C%2037).jpg)
+![Self Portrait](./out/numpy_base/ssd/self_portrait_g_(78%2C%2029)_r_(175%2C%2037).jpg)
 
-[Icon](./out/numpy_base/ssd/icon_g_(41%2C%2017)_r_(90%2C%2023).jpg)
+![Icon](./out/numpy_base/ssd/icon_g_(41%2C%2017)_r_(90%2C%2023).jpg)
 
 
-[Lady](./out/numpy_base/ssd/lady_g_(55%2C%208)_r_(115%2C%2012).jpg)
+![Lady](./out/numpy_base/ssd/lady_g_(55%2C%208)_r_(115%2C%2012).jpg)
 
-[Three generations](./out/numpy_base/ssd/three_generations_g_(52%2C%2014)_r_(111%2C%2012).jpg)
+![Three generations](./out/numpy_base/ssd/three_generations_g_(52%2C%2014)_r_(111%2C%2012).jpg)
 
-[Turkmen](./out/numpy_base/ssd/turkmen_g_(55%2C%2021)_r_(116%2C%2029).jpg)
+![Turkmen](./out/numpy_base/ssd/turkmen_g_(55%2C%2021)_r_(116%2C%2029).jpg)
 
-[Village](./out/numpy_base/ssd/village_g_(64%2C%2012)_r_(137%2C%2022).jpg)
+![Village](./out/numpy_base/ssd/village_g_(64%2C%2012)_r_(137%2C%2022).jpg)
 
-[Train](./out/numpy_base/ssd/train_g_(43%2C%206)_r_(86%2C%2032).jpg)
+![Train](./out/numpy_base/ssd/train_g_(43%2C%206)_r_(86%2C%2032).jpg)
 
-[Harvesters](./out/numpy_base/ssd/harvesters_g_(59%2C%2017)_r_(123%2C%2014).jpg)
+![Harvesters](./out/numpy_base/ssd/harvesters_g_(59%2C%2017)_r_(123%2C%2014).jpg)
 There's an artifact on the left of this image but this seems unlikely to be a misalignment since the center of the image is fine. Rather, perhaps the person moved, or there's local warping.
 
 
-[Emir](./out/numpy_base/ssd/emir.jpg)
+![Emir](./out/numpy_base/ssd/emir_g_(48%2C%2024)_r_(136%2C%20-280).jpg)
 This is a drastic misalignment.
 
 | Image | Green Offset (X, Y) | Red Offset (X, Y) |
@@ -50,9 +50,10 @@ This is a drastic misalignment.
 | Train | 43, 6 | 86, 32 |
 | Emir | 48, 24 | 136, -280 |
 
-Then the NCC metric.
+**Then the NCC metric.**
 
-TODO links
+There are only 1 pixel disagreements except for Emir, so I only re-post Emir. It is still, however, a failure.
+![Emir](./out/numpy_base/ncc/emir_g_(48%2C%2024)_r_(-330%2C%2017).jpg)
 
 | Image | Green Offset (X, Y) | Red Offset (X, Y) |
 | ---: | --- | --- |
@@ -67,23 +68,27 @@ TODO links
 | Train | 42, 6 | 86, 32 |
 | Emir | 48, 24 | -330, 17 |
 
-There are only 1 pixel disagreements except for Emir, which is a failure anyway.
+## Failure modes
+The Emir mode fails in its red channel for both SSD and NCC metric. Examining the grayscale source, the actual luminance in the red channel looks entirely different from the other two (there's no intensity in the red channel). Any matching metric must look at the edges to be successful here.
 
 ### Prokudin-Gorskii extra examples
 I noted some SSD fragility in development; this is reiterated her.SSD fails on at least one plate here, but NCC works without tuning hyperparameters. It's hard to pinpoint an exact qualitative difference between these and the given demos (to explain the total failure here), so I would conclude that SSD is just too brittle to use in general.
 
-TODO links
+**SSD**
+![River](./out/numpy_base/ssd/river_g_(25%2C%20-5)_r_(153%2C%20-213).jpg)
+![Railroad](./out/numpy_base/ssd/railroad_g_(101%2C%20-428)_r_(102%2C%202).jpg)
+![Grass](./out/numpy_base/ssd/grass_g_(-484%2C%20-474)_r_(52%2C%2021).jpg)
+
+**NCC**
+![River](./out/numpy_base/ncc/river_g_(25%2C%20-5)_r_(102%2C%20-11).jpg)
+![Railroad](./out/numpy_base/ncc/railroad_g_(26%2C%201)_r_(102%2C%202).jpg)
+![Grass](./out/numpy_base/ncc/grass_g_(22%2C%2015)_r_(52%2C%2021).jpg)
 
 | Image | SSD Green Offset | SSD Red Offset | NCC Green Offset | NCC Red Offset |
 | ---: | --- | --- | --- | --- |
 | River | 25, -5 | 153, -213 | 25, -5 | 102, -11 |
 | Railroad | 101,-428 | 102, 2 | 26, 1 | 102, 2|
 | Grass | -484, -474 | 52, 21 | 22, 15 | 52, 21 |
-
-
-
-## Failure modes
-TODO
 
 
 
